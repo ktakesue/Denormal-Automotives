@@ -51,7 +51,7 @@ INNER JOIN models ON car_models.model_code = models.model_code AND car_models.mo
     --SELECT COUNT(*) FROM (SELECT DISTINCT make_code, make_title FROM car_models) x;
     --SELECT COUNT(*) FROM (SELECT DISTINCT car_models.model_code, car_models.model_title, makes.make_id FROM makes INNER JOIN car_models USING (make_code))x;
 
-SELECT DISTINCT car_models.make_title FROM makes INNER JOIN car_models ON car_models.make_title = makes.make_title;
+SELECT DISTINCT makes.make_title FROM makes;
 
 --In `normal_cars.sql`, create a query to list all `model_title` values 
 --where the `make_code` is `'VOLKS'` Without any duplicate rows, this should have 27 results.
@@ -63,11 +63,14 @@ WHERE makes.make_code LIKE '%VOLKS%';
 --and year from `car_models` where the `make_code` is `'LAM'`. 
 --Without any duplicate rows, this should have 136 rows.
 
-SELECT DISTINCT car_models.make_code, car_models.model_code, car_models.model_title, car_models.year
-FROM car_models INNER JOIN makes ON car_models.make_code = makes.make_code
+SELECT DISTINCT makes.make_code, models.model_code, models.model_title, years.year
+FROM years INNER JOIN models ON years.model_id = models.model_id
+INNER JOIN makes ON models.make_id = makes.make_id
 WHERE makes.make_code LIKE '%LAM%';
 
 --In `normal_cars.sql`, create a query to list all fields from all `car_models` in years between `2010` and `2015`.
 --Without any duplicate rows, this should have 7884 rows.
 
-SELECT DISTINCT * FROM car_models WHERE year BETWEEN 2010 AND 2015;
+SELECT DISTINCT * FROM years INNER JOIN models ON years.model_id = models.model_id
+INNER JOIN makes ON models.make_id = makes.make_id 
+WHERE years.year BETWEEN 2010 AND 2015;
